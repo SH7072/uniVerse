@@ -1,0 +1,19 @@
+{
+  "name": "universe",
+  "version": "1.0.0",
+  "description": "Social Media Backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SH7072/uniVerse.git"
+  },
+  "author": "Shubham Chandwani",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SH7072/uniVerse/issues"
+  },
+  "homepage": "https://github.com/SH7072/uniVerse#readme"
+}
