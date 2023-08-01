@@ -9,13 +9,13 @@ const { verifyToken, signToken } = require("../Config/jwt");
 router.post("/createPost/:id", verifyToken, createPost);
 
 // Delete a post with the given id for the authenticated user
-router.delete("/deletePost/:id", verifyToken, deletePost);
+router.delete("/deletePost/:user_id/:post_id", verifyToken, deletePost);
 
 // Get information about a post with the given id for the authenticated user
-router.get("/post/:id", verifyToken, getPost);
+router.get("/getPost/:post_id", verifyToken, getPost);
 
 // Get all the posts for the authenticated user
-router.get("/allPost/:id", verifyToken, getAllPost);
+router.get("/allPost/:user_id", verifyToken, getAllPost);
 
 
 // Like a post with the given id for the authenticated user
@@ -25,7 +25,7 @@ router.post("/likePost/:user_id/:post_id", verifyToken, likePost);
 router.post("/unlikePost/:user_id/:post_id", verifyToken, unlikePost);
 
 // Add a comment to a post with the given id for the authenticated user
-router.post("/comment/:id", verifyToken, addComment);
+router.post("/comment/:user_id/:post_id", verifyToken, addComment);
 
 
 

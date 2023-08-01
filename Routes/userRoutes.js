@@ -16,6 +16,6 @@ router.get("/getUser/:id",verifyToken, getUser);
 router.post("/follow/:user_id/:follow_id",verifyToken,follow);
 
 // UnFollow User
-router.post("/unFollow/:user_id/:follows_id",verifyToken,unFollow);
+router.post("/unFollow/:user_id/:follow_id",verifyToken,unFollow);
 
 module.exports = router;

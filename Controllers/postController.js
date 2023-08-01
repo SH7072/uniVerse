@@ -21,6 +21,7 @@ exports.createPost = async (req, res, next) => {
         await post.save();
 
         user.posts.push(post._id);
+        await user.save();
         res.status(200).json({
             message: "Post created",
             post: post,
@@ -59,7 +60,7 @@ exports.deletePost = async (req, res, next) => {
         }
         await Post.findByIdAndDelete(post_id);
 
-        user.posts = user.posts.filter((post_id) => !post.user_id.equals(post_id));
+        user.posts = user.posts.pull(post_id);
         await user.save();
         res.status(200).json({
             message: "Post deleted"
@@ -79,7 +80,7 @@ exports.getPost = async (req, res, next) => {
         const { post_id } = req.params;
         const post = await Post.findById(post_id)
             .populate("comments.user_id", "name")
-            .populate("like", "name");
+            .populate("likes", "name");
         if (!post) {
             const error = new Error("Post not found");
             error.statusCode = 404;
@@ -114,7 +115,7 @@ exports.getAllPost = async (req, res, next) => {
             user.posts.map(async (post) => {
                 const postDetails = await Post.findById(post._id)
                     .populate("comments.user_id", "name")
-                    .populate("like", "name");
+                    .populate("likes", "name");
                 return postDetails;
             }));
 
@@ -201,7 +202,7 @@ exports.unlikePost = async (req, res, next) => {
             throw error;
         }
 
-        post.likes = post.likes.filter((id) => !id.equals(user_id));
+        post.likes = post.likes.pull(user_id);
         await post.save();
 
         res.status(200).json({
@@ -223,18 +224,16 @@ exports.addComment = async (req, res, next) => {
 
         const { comment } = req.body;
         const { user_id, post_id } = req.params;
-        const user=await User.findById(user_id);
-        if(!user)
-        {
-            const error=new Error("User not found");
-            error.statusCode=404;
+        const user = await User.findById(user_id);
+        if (!user) {
+            const error = new Error("User not found");
+            error.statusCode = 404;
             throw error;
         }
-        const post=await Post.findById(post_id);
-        if(!post)
-        {
-            const error=new Error("Post not found");
-            error.statusCode=404;
+        const post = await Post.findById(post_id);
+        if (!post) {
+            const error = new Error("Post not found");
+            error.statusCode = 404;
             throw error;
         }
         // add comment to the post having id as post_id by user
@@ -246,7 +245,7 @@ exports.addComment = async (req, res, next) => {
         await post.save();
         res.status(200).json({
             message: "Comment added successfully",
-            comment:newComment
+            comment: newComment
 
         });
 

@@ -4,7 +4,7 @@ const { signToken } = require('../Config/jwt');
 exports.createUser = async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
-        console.log(name, email, password);
+        // console.log(name, email, password);
         await User.findOne({ email: email })
             .then(user => {
                 if (user) {
@@ -40,7 +40,7 @@ exports.createUser = async (req, res, next) => {
 exports.login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
-        console.log(email,password);
+        // console.log(email,password);
         if (!email) {
             const error = new Error("Email is Required");
             error.statusCode = 400;
@@ -161,6 +161,7 @@ exports.follow = async (req, res, next) => {
 exports.unFollow=async(req,res,next)=>{
     try {
         const {user_id,follow_id}=req.params;
+        // console.log(user_id,follow_id);
         const currentUser = await User.findById(user_id);
         if(!currentUser)
         {
@@ -168,7 +169,7 @@ exports.unFollow=async(req,res,next)=>{
             error.statusCode=404;
             throw error;
         } 
-        console.log(currentUser.name,currentUser.email);
+        // console.log(currentUser.name,currentUser.email);
         const followUser= await User.findById(follow_id);
         if(!followUser)
         {
@@ -178,8 +179,8 @@ exports.unFollow=async(req,res,next)=>{
         } 
         let followedByMe = false
         // check whether the logged in user is already a follower of this person or not
-        for (let i=0 ;i<currentLoggedInUser._doc.followings.length;i++){
-            if(currentLoggedInUser._doc.followings[i] == follows_id){
+        for (let i=0 ;i<currentUser._doc.followings.length;i++){
+            if(currentUser._doc.followings[i] == follow_id){
                 followedByMe = true
                 break
             }
@@ -196,10 +197,11 @@ exports.unFollow=async(req,res,next)=>{
             await followUser.save();
             // add the person to the following list of the logged in user
             // const currentUser = await User.findById(user_id);
-            currentUser.followings.pull(follows_id);
+            currentUser.followings.pull(follow_id);
             await currentUser.save();
             res.status(200).json({
                 message: "unfollowed",
+                
             })
         }
 
